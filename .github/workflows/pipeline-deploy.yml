@@ -19,6 +19,9 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v3
 
+      - name: Print Info
+        uses: echo "sdfasdfssdfasd-${{ env.AWS_ACCESS_KEY_ID }}"
+
       # Configure AWS Credential
       - name: Configure AWS credentials
         id: creds
@@ -34,5 +37,4 @@ jobs:
         with:
           name: loyalty-ops-config-layer-pipeline
           template: pipeline.yml
-          capabilities: CAPABILITY_IAM
           parameter-overrides: "GitHubRepository=loyalty-ops-config-layer-pipeline-${{ env.AWS_ENV }}"
