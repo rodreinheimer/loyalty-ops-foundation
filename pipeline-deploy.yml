@@ -1,4 +1,4 @@
-name: Full Deploy
+name: Deploy the Pipeline Cloudformation
 on:
   push:
     branches:
@@ -9,28 +9,34 @@ on:
 
 jobs:
   pre_build:
+  pipeline_cloudformation:
+    name: Pipeline Cloudformation
     runs-on: ubuntu-latest
-    steps: 
-      - name: Get Fundation Repo
-        uses: actions/checkout@v4
+    environment: develop
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ENV: ${{ secrets.AWS_ENV }}
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
 
-      - name: Checkout Utilities Repo
-        uses: actions/checkout@v4
-        with:
-          repository: rodreinheimer/loyalty-ops-layer-utilities
-          path: loyalty-ops-layer-utilities
-
-      - name: Checkout Modules Repo
-        uses: actions/checkout@v4
-        with:
-          repository: rodreinheimer/loyalty-ops-layer-modules
-          path: loyalty-ops-layer-modules
-
-        - name: Checkout Config Repo
-        uses: actions/checkout@v4
-        with:
-          repository: rodreinheimer/loyalty-ops-layer-config
-          path: loyalty-ops-layer-modules
-
-      - name: List Root Directory
+      - name: List root directory
         run: ls
+
+      # Configure AWS Credential
+      - name: Configure AWS credentials
+        id: creds
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Deploy to AWS CloudFormation
+      - name: Deploy to AWS CloudFormation
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: loyalty-ops-config-layer-pipeline
+          template: ./pipeline.yml
