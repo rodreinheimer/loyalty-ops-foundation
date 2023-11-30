@@ -14,5 +14,10 @@ jobs:
         with:
           repository: rodreinheimer/loyalty-ops-layer-utilities
           path: loyalty-ops-layer-utilities
+      - name: Checkout Configuration Repo
+        uses: actions/checkout@v4
+        with:
+          repository: rodreinheimer/loyalty-ops-layer-config
+          path: loyalty-ops-layer-config
       - name: List Root Directory
         run: ls
