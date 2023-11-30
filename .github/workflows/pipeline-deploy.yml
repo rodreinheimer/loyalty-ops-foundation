@@ -3,8 +3,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '.github/workflows/pipeline-deploy.yml'
 
-  workflow_dispatch:
 jobs:
   pipeline_cloudformation:
     name: Pipeline Cloudformation
@@ -18,9 +19,6 @@ jobs:
     steps:
       - name: Get Code
         uses: actions/checkout@v3
-
-      - name: Print Info
-        run: echo "sdfasdfsfasd${{ env.AWS_ENV }}"
 
       - name: List root directory
         run: ls
