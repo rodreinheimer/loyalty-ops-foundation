@@ -36,5 +36,5 @@ jobs:
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
           name: loyalty-ops-config-layer-pipeline
-          template: pipeline.yml
+          template: ./pipeline.yml
           parameter-overrides: "GitHubRepository=loyalty-ops-config-layer-pipeline-${{ env.AWS_ENV }}"
