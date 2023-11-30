@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Loyalty Report and Monitors Foundation Pipeline - Full Deploy 
+Description: Loyalty Report and Monitors Foundation Pipeline - Full Deploy - 
 Parameters:
   PipelineBucketName:
     Type: String
