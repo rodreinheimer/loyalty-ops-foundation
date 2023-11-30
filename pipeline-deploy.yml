@@ -1,0 +1,36 @@
+name: Full Deploy
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/pipeline-deploy.yml'
+      - 'pipeline.yml'
+
+jobs:
+  pre_build:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Get Fundation Repo
+        uses: actions/checkout@v4
+
+      - name: Checkout Utilities Repo
+        uses: actions/checkout@v4
+        with:
+          repository: rodreinheimer/loyalty-ops-layer-utilities
+          path: loyalty-ops-layer-utilities
+
+      - name: Checkout Modules Repo
+        uses: actions/checkout@v4
+        with:
+          repository: rodreinheimer/loyalty-ops-layer-modules
+          path: loyalty-ops-layer-modules
+
+        - name: Checkout Config Repo
+        uses: actions/checkout@v4
+        with:
+          repository: rodreinheimer/loyalty-ops-layer-config
+          path: loyalty-ops-layer-modules
+
+      - name: List Root Directory
+        run: ls
