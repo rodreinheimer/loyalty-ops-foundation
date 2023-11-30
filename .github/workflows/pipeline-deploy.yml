@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Print Info
-        uses: echo "sdfasdfssdfasd-${{ env.AWS_ACCESS_KEY_ID }}"
+        run: echo "sdfasdfssdfasd-${{ env.AWS_ACCESS_KEY_ID }}"
 
       # Configure AWS Credential
       - name: Configure AWS credentials
