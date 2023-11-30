@@ -1,0 +1,38 @@
+{
+    "Records": [
+        {
+            "eventVersion": "2.1",
+            "eventSource": "aws:s3",
+            "awsRegion": "us-west-1",
+            "eventTime": "2021-10-09T05:42:52.248Z",
+            "eventName": "ObjectCreated:Put",
+            "userIdentity": {
+                "principalId": "A16LVHEUMKMM9I"
+            },
+            "requestParameters": {
+                "sourceIPAddress": "167.64.57.10"
+            },
+            "responseElements": {
+                "x-amz-request-id": "26D3CB618B950CB7",
+                "x-amz-id-2": "n0MKt46DgUpa6oxic143NMaFNjVoYV7csOmY4nizUD7+qpxmmZfaq5ib/9D5574zUNWW6poAK9ebcnZ5uBD/qGKDm+OL/Adi"
+            },
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "f12c1549-f62c-4487-809f-2649f016c88b",
+                "bucket": {
+                    "name": "loyalty-ops-foundation-report-prd",
+                    "ownerIdentity": {
+                        "principalId": "A16LVHEUMKMM9I"
+                    },
+                    "arn": "arn:aws:s3:::loyalty-ops-foundation-report-prd"
+                },
+                "object": {
+                    "key": "PURCHASE_REGISTRATION_REPORT_2023-11-07_195420.json",
+                    "size": 327,
+                    "eTag": "2733db18d0f5c205f1d5e67e88e20c91",
+                    "sequencer": "0060470AE10C89B4AA"
+                }
+            }
+        }
+    ]
+}

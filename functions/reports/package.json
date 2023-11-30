@@ -1,0 +1,16 @@
+{
+  "name": "skx_operations",
+  "version": "1.0.0",
+  "private": true,
+  "main": "default_report.js",
+  "devDependencies": {
+    "aws-sdk": "^2.1490.0",
+    "https": "1.0.0"
+  },
+  "dependencies": {
+    "config": "^1.31.0",
+    "mysql2": "^2.2.5",
+    "moment": "^2.29.1",
+    "mongodb": "^4.1.4"
+  }
+}

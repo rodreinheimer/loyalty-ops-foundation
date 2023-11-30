@@ -1,0 +1,160 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'Loyalty Report and Monitors Foundation IaC'
+
+Parameters:
+  EnvType:
+    Description: Environment type.
+    Default: test
+    Type: String
+    AllowedValues: 
+      - prd
+      - dev
+      - test
+    ConstraintDescription: must specify prd, dev or test
+
+Globals:
+  Function:
+    Runtime: nodejs16.x
+    Timeout: 88
+    Environment: 
+      Variables: 
+        SKX_CONFIG_LAYER_ROOT: "/opt/nodejs"
+        SKX_ENV: !Ref EnvType
+    Layers:
+      - !Ref ModulesLayer
+      - !Ref ConfigLayer
+      - !Ref UtilLayer
+
+Resources:
+  PurchaseRegistrationReportGenerateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join [ '', [ 'loyalty-ops-function-report-purchase-registration-', !Ref EnvType ] ]
+      Handler: purchase_registration_report.handler
+      CodeUri: functions/reports/
+      Description: Loyalty Report and Monitors Generate Purchase Registration
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AWSLambdaReadOnlyAccess
+      Role:
+        Fn::GetAtt:
+          - ReportExecutionRole
+          - Arn
+      Environment: 
+        Variables: 
+          LOYALTY_REPORTS_DESTINATION_BUCKET: !Ref ReportBucket
+          
+  ReportNotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Join [ '', [ 'loyalty-ops-function-notify-default-', !Ref EnvType ] ]
+      Handler: default_notify.handler
+      CodeUri: functions/notifications/
+      Description: Loyalty Report and Monitors Handle Notification
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AWSLambdaReadOnlyAccess
+      Role:
+        Fn::GetAtt:
+          - ReportExecutionRole
+          - Arn
+
+      Events:
+        TriggerNotificationOnUploadAction:
+          Type: S3
+          Properties:
+            Bucket: !Ref ReportBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: 'json'
+
+  ModulesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Join [ '', [ 'loyalty-ops-modules-', !Ref EnvType ] ]
+      Description: Loyalty report and monitors modules.
+      ContentUri: layers/loyalty-ops-layer-modules/.
+      CompatibleRuntimes:
+        - nodejs16.x
+
+  ConfigLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Join [ '', [ 'loyalty-ops-configurations-', !Ref EnvType ] ]
+      Description: Loyalty report and monitors configurations.
+      ContentUri: layers/loyalty-ops-layer-config/.
+      CompatibleRuntimes:
+        - nodejs16.x
+
+  UtilLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Join [ '', [ 'loyalty-ops-utilities-', !Ref EnvType ] ]
+      Description: Loyalty report and monitors utilities.
+      ContentUri: layers/loyalty-ops-layer-utilities/.
+      CompatibleRuntimes:
+        - nodejs16.x
+
+  ReportBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join [ '', [ 'loyalty-ops-foundation-report-', !Ref EnvType ] ]
+
+  SKXUSPurchaseRegistrationReportGenerateEventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: !Join [ '', [ 'SKXUS-PurchaseRegistrationReportGenerateEventRule-', !Ref EnvType ] ] 
+      ScheduleExpression : rate(1 day)
+      State: DISABLED
+      Targets:
+        - Id: 1
+          Arn: 
+            Fn::GetAtt:
+              - PurchaseRegistrationReportGenerateFunction
+              - Arn
+          Input: "{\"brand\": \"skx\", \"region\": \"us\", \"reportId\": \"PURCHASE_REGISTRATION_REPORT\"}"
+
+  ReportPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: lambda:InvokeFunction
+        Principal: events.amazonaws.com
+        FunctionName:
+          Fn::GetAtt: 
+            - PurchaseRegistrationReportGenerateFunction
+            - Arn
+
+  ReportExecutionRole:
+    Description: Loyalty report and monitors service role for Lambda
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join [ '', [ 'loyaltyOpsLambdaFoundationExecutionRole-', !Ref EnvType ] ] 
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: [lambda.amazonaws.com]
+          Action: sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: ReportExecutionRolePolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'ses:SendEmail'
+                  - 'ses:SendRawEmail'
+                Resource: '*'
+                Effect: Allow
+              - Action:
+                  - 'secretsmanager:GetSecretValue'
+                Resource: '*'
+                Effect: Allow
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
