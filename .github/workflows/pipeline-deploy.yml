@@ -22,6 +22,9 @@ jobs:
       - name: Print Info
         run: echo "sdfasdfssdfasd${{ env.AWS_ACCESS_KEY_ID }}"
 
+      - name: List root directory
+        run: ls
+
       # Configure AWS Credential
       - name: Configure AWS credentials
         id: creds
