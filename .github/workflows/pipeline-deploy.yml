@@ -40,4 +40,3 @@ jobs:
         with:
           name: loyalty-ops-config-layer-pipeline
           template: ./pipeline.yml
-          parameter-overrides: "GitHubRepository=loyalty-ops-config-layer-pipeline"
