@@ -35,14 +35,14 @@ jobs:
 
       - name: List Root Directory
         run: |
-        ls 
-        echo 'ENV_NAME: ${{ vars.ENV_NAME }}'
-        echo 'DEPLOYMENT_BUCKET: ${{ vars.DEPLOYMENT_BUCKET }}'
-        echo 'ENV_NAME: ${{ vars.STACK_NAME }}'
-        echo 'SOURCE_CODE_1: ${{ vars.SOURCE_CODE_1 }}'
-        echo 'SOURCE_CODE_2: ${{ vars.SOURCE_CODE_2 }}'
-        echo 'SOURCE_CODE_3: ${{ vars.SOURCE_CODE_3 }}'
-        echo 'SOURCE_CODE_4: ${{ vars.SOURCE_CODE_4 }}'
+          ls 
+          echo 'ENV_NAME: ${{ vars.ENV_NAME }}'
+          echo 'DEPLOYMENT_BUCKET: ${{ vars.DEPLOYMENT_BUCKET }}'
+          echo 'ENV_NAME: ${{ vars.STACK_NAME }}'
+          echo 'SOURCE_CODE_1: ${{ vars.SOURCE_CODE_1 }}'
+          echo 'SOURCE_CODE_2: ${{ vars.SOURCE_CODE_2 }}'
+          echo 'SOURCE_CODE_3: ${{ vars.SOURCE_CODE_3 }}'
+          echo 'SOURCE_CODE_4: ${{ vars.SOURCE_CODE_4 }}'
 
       - name:
         run: echo install started on `date`
