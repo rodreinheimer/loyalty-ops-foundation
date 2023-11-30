@@ -4,8 +4,8 @@ on:
     branches:
       - main
     paths:
-      - './.github/workflows/pipeline-deploy.yml'
-      - './pipeline.yml'
+      - '.github/workflows/pipeline-deploy.yml'
+      - 'pipeline.yml'
 
 jobs:
   pipeline_cloudformation:
