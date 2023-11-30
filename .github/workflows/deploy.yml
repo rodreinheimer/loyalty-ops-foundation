@@ -1,10 +1,8 @@
-name: name: Full Deploy
-
+name: Full Deploy
 on:
   push:
     branches:
       - main
-
 jobs:
   pre_build:
     runs-on: ubuntu-latest
