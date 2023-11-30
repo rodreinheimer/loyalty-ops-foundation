@@ -14,28 +14,31 @@ jobs:
     steps: 
       - name: Get Fundation Repo
         uses: actions/checkout@v4
+        with:
+          path: loyalty-ops-layer-foundation/build
 
       - name: Checkout Utilities Repo
         uses: actions/checkout@v4
         with:
           repository: rodreinheimer/loyalty-ops-layer-utilities
-          path: loyalty-ops-layer-utilities
+          path: loyalty-ops-layer-foundation/build/layers/loyalty-ops-layer-utilities
 
       - name: Checkout Configuration Repo
         uses: actions/checkout@v4
         with:
           repository: rodreinheimer/loyalty-ops-layer-config
-          path: loyalty-ops-layer-config
+          path: loyalty-ops-layer-foundation/build/layers/loyalty-ops-layer-config
 
       - name: Checkout Modules Repo
         uses: actions/checkout@v4
         with:
           repository: rodreinheimer/loyalty-ops-layer-modules
-          path: loyalty-ops-layer-modules
+          path: loyalty-ops-layer-foundation/build/layers/loyalty-ops-layer-modules
 
       - name: List Root Directory
         run: |
-          ls 
+          ls -R
+          echo '------------------------------------------------'
           echo 'ENV_NAME: ${{ vars.ENV_NAME }}'
           echo 'DEPLOYMENT_BUCKET: ${{ vars.DEPLOYMENT_BUCKET }}'
           echo 'ENV_NAME: ${{ vars.STACK_NAME }}'
@@ -43,9 +46,15 @@ jobs:
           echo 'SOURCE_CODE_2: ${{ vars.SOURCE_CODE_2 }}'
           echo 'SOURCE_CODE_3: ${{ vars.SOURCE_CODE_3 }}'
           echo 'SOURCE_CODE_4: ${{ vars.SOURCE_CODE_4 }}'
+          echo '------------------------------------------------'
 
       - name:
         run: echo install started on `date`
+
+      # Move assets to build staging directory
+      - name:
+        run:
+          cd ../ && mkdir -p build/${SourceCode1} && cp -r ${CODEBUILD_SRC_DIR}/. build/${SourceCode1}
 
       - name: Install NodeJS
         uses: actions/setup-node@v3
