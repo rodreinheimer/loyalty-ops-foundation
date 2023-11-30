@@ -31,11 +31,12 @@ jobs:
       - name: List Root Directory
         run: ls
 
+      - name:
+        run: echo install started on `date`
+
       - name: Install NodeJS
         uses: actions/setup-node@v3
         with:
           node-version: 16
 
-      - name: Install dependencies
-        run: npm ci
 
