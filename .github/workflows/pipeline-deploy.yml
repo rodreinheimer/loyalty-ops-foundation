@@ -1,0 +1,13 @@
+name: Deploy the Pipeline Cloudformation
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+jobs:
+  pipeline_cloudformation:
+    name: Pipeline Cloudformation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
