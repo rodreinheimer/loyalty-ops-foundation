@@ -2,7 +2,7 @@ name: Deploy the Pipeline Cloudformation
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 jobs:
   pipeline_cloudformation:
