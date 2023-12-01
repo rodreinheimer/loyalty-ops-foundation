@@ -66,13 +66,9 @@ jobs:
           zip -vr layer_delta.zip nodejs/ -x "*.DS_Store"
 
       # Deploy to AWS CloudFormation
-      - name: Deploy to AWS CloudFormation 3
-        uses: aws-actions/aws-cloudformation-github-deploy@v1
-        with:
-          name: ${{ vars.STACK_NAME }}
-          template: build/loyalty-ops-layer-foundation/template.yml
-          capabilities: CAPABILITY_AUTO_EXPAND
-          parameter-overrides: "EnvType=${{ vars.ENV_NAME }}"
+      - name: Deploy to AWS Sam Package
+        uses: aws-actions/setup-sam@v2
+      - run: sam package --debug --template build/loyalty-ops-layer-foundation/template.yml --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }}
 
 
 
