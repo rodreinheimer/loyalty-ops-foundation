@@ -23,7 +23,7 @@ jobs:
       - name: Output GitHub context
         run: echo "${{ toJSON(github) }}"
 
-      - name: Add label to PR - ${{ env.PR_NUMBER }} - ${{ vars.APP_DEPLOYING_LABEL }}
+      - name: Add label to PR 2 - ${{ env.PR_NUMBER }} - ${{ vars.APP_DEPLOYING_LABEL }}
         if: env.PR_NUMBER
         uses: actions/github-script@v6
         with:
