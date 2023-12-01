@@ -53,7 +53,7 @@ jobs:
         uses: aws-actions/setup-sam@v2
       - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides EnvType=${{ vars.ENV_NAME }} --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_NAMED_IAM
 
-      - name: Add label to PR
+      - name: Successful Deploy
         if: success() && env.PR_NUMBER
         uses: actions/github-script@v6
         with:
@@ -79,6 +79,8 @@ jobs:
               issue_number: issue_number,
               labels: ['${{ vars.APP_DEPLOYED_LABEL }}']
             });
+
+      - name: Failed Deploy
         if: failure() && env.PR_NUMBER
         uses: actions/github-script@v6
         with:
