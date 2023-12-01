@@ -14,6 +14,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
+      PR_NUMBER: ${{ github.event.number }}
 
     steps:
       - name: List Root Directory
@@ -22,13 +23,13 @@ jobs:
       - name: Output GitHub context
         run: echo "${{ toJSON(github) }}"
 
-      - name: Add label to PR - ${{ vars.APP_DEPLOYING_LABEL }}
-        if: inputs.pr_number
+      - name: Add label to PR - ${{ env.PR_NUMBER }} - ${{ vars.APP_DEPLOYING_LABEL }}
+        if: env.PR_NUMBER
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            let issue_number = ${{ inputs.pr_number }};
+            let issue_number = ${{ env.PR_NUMBER }};
             await github.rest.issues.removeLabel({
               owner: context.repo.owner,
               repo: context.repo.repo,
