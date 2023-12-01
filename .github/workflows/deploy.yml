@@ -80,7 +80,7 @@ jobs:
               repo: context.repo.repo,
               issue_number: issue_number,
               body: `App has been deployed for testing 
-                You can view it at`
+                This is an example`
             });
             await github.rest.issues.removeLabel({
               owner: context.repo.owner,
