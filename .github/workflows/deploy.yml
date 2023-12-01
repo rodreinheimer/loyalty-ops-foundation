@@ -70,7 +70,7 @@ jobs:
         uses: aws-actions/setup-sam@v2
       #- run: sam package --debug --template build/loyalty-ops-layer-foundation/template.yml --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }}
       # Prevent prompts and failure when the stack is unchanged
-      - run: sam deploy --debug --no-confirm-changeset --no-fail-on-empty-changeset --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_AUTO_EXPAND 
+      - run: sam deploy --debug --no-confirm-changeset --no-fail-on-empty-changeset --config-file build/loyalty-ops-layer-foundation/samconfig.toml --template_file build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_AUTO_EXPAND 
 
 
 
