@@ -7,7 +7,7 @@ on:
     branches:
       - main
 jobs:
-  pre_build:
+  build:
     runs-on: ubuntu-latest
     environment: develop
     env:
@@ -23,7 +23,7 @@ jobs:
       - name: Output GitHub context
         run: echo "${{ toJSON(github) }}"
 
-      - name: Add label to PR 2 - ${{ env.PR_NUMBER }} - ${{ vars.APP_DEPLOYING_LABEL }}
+      - name: Add label to PR - ${{ env.PR_NUMBER }} - ${{ vars.APP_DEPLOYING_LABEL }}
         if: env.PR_NUMBER
         uses: actions/github-script@v6
         with:
@@ -31,7 +31,7 @@ jobs:
           script: |
             let issue_number = ${{ env.PR_NUMBER }};
             await github.rest.issues.addLabels({
-              owner: context.repo.owner,
+              own r: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
               labels: ['${{ vars.APP_DEPLOYING_LABEL }}']
