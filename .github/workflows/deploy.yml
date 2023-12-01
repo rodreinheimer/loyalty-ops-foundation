@@ -35,8 +35,15 @@ jobs:
           repository: rodreinheimer/loyalty-ops-layer-modules
           path: build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules
 
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
       - name: List Root Directory
         run: |
+          pwd
+          ls -R
           echo '------------------------------------------------'
           echo 'ENV_NAME: ${{ vars.ENV_NAME }}'
           echo 'DEPLOYMENT_BUCKET: ${{ vars.DEPLOYMENT_BUCKET }}'
@@ -48,29 +55,10 @@ jobs:
           echo '------------------------------------------------'
 
       - name: Step into Build Directory
-        run: |
-          echo '------------------------------------------------'
-          pwd
-          ls -R
-          echo '------------------------------------------------'
-          cd ./build
-
-      - name: List Root Directory
-        run: |
-          echo '------------------------------------------------'
-          pwd
-          ls -R
-          echo '------------------------------------------------'
-
-      - name: Install NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+        run: cd build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules/nodejs
 
       - name: Build Modules
-        run: |
-          cd build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules/nodejs
-          run: npm ci
+        run: npm ci
           
       - name: Package Modules Layer
         run: |
