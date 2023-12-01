@@ -16,6 +16,9 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
 
     steps:
+      - name: List Root Directory
+        run: echo "Add label to PR - ${{ vars.APP_DEPLOYING_LABEL }}"
+
       - name: Add label to PR - ${{ vars.APP_DEPLOYING_LABEL }}
         if: inputs.pr_number
         uses: actions/github-script@v6
@@ -37,7 +40,7 @@ jobs:
             });
 
       - name: Get Fundation Repo
-        uses: actions/checkout@4
+        uses: actions/checkout@v4
         with:
           path: build/loyalty-ops-layer-foundation
 
