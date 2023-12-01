@@ -15,7 +15,27 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
 
-    steps: 
+    steps:
+      - name: Add label to PR - ${{ vars.APP_DEPLOYING_LABEL }}
+        if: inputs.pr_number
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            let issue_number = ${{ inputs.pr_number }};
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              name: '${{ vars.APP_DEPLOYED_LABEL }}'
+            });
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              labels: ['${{ vars.APP_DEPLOYING_LABEL }}']
+            });
+
       - name: Get Fundation Repo
         uses: actions/checkout@v  4
         with:
