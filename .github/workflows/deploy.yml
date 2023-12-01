@@ -69,7 +69,7 @@ jobs:
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
           name: ${{ vars.STACK_NAME }}
-          template: ./template.yml
+          template: build/loyalty-ops-layer-foundation/template.yml
           capabilities: CAPABILITY_NAMED_IAM
           parameter-overrides: "EnvType=${{ vars.ENV_NAME }}"
 
