@@ -69,7 +69,7 @@ jobs:
 
       - name: Build Modules
         run: |
-          cd ../../layers/loyalty-ops-layer-modules/nodejs
+          cd loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules/nodejs
           run: npm ci
           
       - name: Package Modules Layer
