@@ -58,9 +58,8 @@ jobs:
       - name: List Root Directory
         run: |
           echo '------------------------------------------------'
-          echo 'Build Location `pwd`'
-          echo 'Recursive List `ls -R`'
-          echo 'End Pre-build Phase `date`'
+          echo pwd
+          echo ls -R
           echo '------------------------------------------------'
 
       - name: Install NodeJS
