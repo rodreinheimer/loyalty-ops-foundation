@@ -63,9 +63,9 @@ jobs:
           echo '------------------------------------------------'
 
       # Deploy to AWS CloudFormation
-      - name: Deploy to AWS Sam Deploy
-        uses: aws-actions/setup-sam@v2
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides EnvType=${{ vars.ENV_NAME }} --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_NAMED_IAM
+      #- name: Deploy to AWS Sam Deploy
+      #  uses: aws-actions/setup-sam@v2
+      #- run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides EnvType=${{ vars.ENV_NAME }} --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_NAMED_IAM
 
       - name: 'Comment on PR'
         uses: actions/github-script@v6
@@ -73,7 +73,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             let fs = require('fs');
-            let issue_number = ${{ inputs.pr_number }};
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
