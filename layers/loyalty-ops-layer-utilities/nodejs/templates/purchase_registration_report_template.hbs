@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>VF Operations Report</title>
+    <style>
+        table,
+        td {
+            border: 1px solid lightgrey;
+            border-collapse: collapse;
+            background-color: #ffffff
+        }
+
+        th {
+            background-color: #004c97;
+        }
+
+        th,
+        td {
+            padding: 10px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 200;
+            text-align: left;
+            text-transform: capitalize;
+            color: #004c97;
+        }
+
+        thead {
+            color: #FFFFFF;
+            font-weight: bold
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;        }
+
+        .inline {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            font-size: 11px
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="inline">
+            <img src="http://sh.skechers.com/logos/images/CORP_SKX_S_LOGO_WEB_LOGO.jpg"
+                width="50" height="50" alt="Skechers">
+        </div>
+        <div class="inline">
+            <h1> PURCHASE_REGISTRATION_REPORT </h1>
+        </div>
+    </div>
+    <div class="content">
+        {{{report.body}}}
+        <br><br>
+        {{#if report.topStores_records}}
+        <table>
+            <thead>
+                <tr>
+                    {{#each report.topStores_headers}}
+                    <th>{{@this}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each report.topStores_records}}
+                <tr>
+                    {{#each this}}
+                    <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+        <br><br>
+        {{#if report.topUsers_records}}
+        <table>
+            <thead>
+                <tr>
+                    {{#each report.topUsers_headers}}
+                    <th>{{@this}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each report.topUsers_records}}
+                <tr>
+                    {{#each this}}
+                    <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+    </div>
+</body>
