@@ -46,10 +46,16 @@ jobs:
           echo 'SOURCE_CODE_3: ${{ vars.SOURCE_CODE_3 }}'
           echo 'SOURCE_CODE_4: ${{ vars.SOURCE_CODE_4 }}'
           echo '------------------------------------------------'
-          cd ./build
-          echo Build Location `pwd` 
-          echo Recursive List `ls -R`
-          echo End Pre-build Phase `date`
+
+      - name: Step into Build Directory
+        run: cd ./build
+
+      - name: List Root Directory
+        run: |
+          echo '------------------------------------------------'
+          echo 'Build Location `pwd`'
+          echo 'Recursive List `ls -R`'
+          echo 'End Pre-build Phase `date`'
           echo '------------------------------------------------'
 
       - name: Install NodeJS
