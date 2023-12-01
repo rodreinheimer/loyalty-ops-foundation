@@ -58,8 +58,8 @@ jobs:
       - name: List Root Directory
         run: |
           echo '------------------------------------------------'
-          echo pwd
-          echo ls -R
+          pwd
+          ls -R
           echo '------------------------------------------------'
 
       - name: Install NodeJS
