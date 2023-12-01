@@ -60,7 +60,9 @@ jobs:
           ls -lrt
 
       - name: Build Modules
-        run: npm ci
+        run: |
+          ls -lrt
+          npm ci
           
       - name: Package Modules Layer
         run: |
