@@ -55,7 +55,9 @@ jobs:
           echo '------------------------------------------------'
 
       - name: Step into Build Directory
-        run: cd build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules/nodejs
+        run: |
+          cd build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules/nodejs
+          ls -lrt
 
       - name: Build Modules
         run: npm ci
