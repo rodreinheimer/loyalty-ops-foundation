@@ -66,11 +66,11 @@ jobs:
           zip -vr layer_delta.zip nodejs/ -x "*.DS_Store"
 
       # Deploy to AWS CloudFormation
-      - name: Deploy to AWS Sam Build
+      - name: Deploy to AWS Sam Build 2
         uses: aws-actions/setup-sam@v2
       #- run: sam package --debug --template build/loyalty-ops-layer-foundation/template.yml --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }}
       # Prevent prompts and failure when the stack is unchanged
-      - run: sam deploy --debug --no-confirm-changeset --no-fail-on-empty-changeset --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_AUTO_EXPAND 
+      - run: sam deploy --debug --no-confirm-changeset --no-fail-on-empty-changeset --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_NAMED_IAM 
 
 
 
