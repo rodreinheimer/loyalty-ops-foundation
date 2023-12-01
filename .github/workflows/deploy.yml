@@ -57,7 +57,7 @@ jobs:
       - name: Build Modules
         run: |
           cd build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules/nodejs
-          npm ci
+          npm install --production
           
       - name: Package Modules Layer
         run: |
