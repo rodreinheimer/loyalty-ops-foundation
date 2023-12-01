@@ -48,7 +48,12 @@ jobs:
           echo '------------------------------------------------'
 
       - name: Step into Build Directory
-        run: cd ./build
+        run: |
+          echo '------------------------------------------------'
+          pwd
+          ls -R
+          echo '------------------------------------------------'
+          cd ./build
 
       - name: List Root Directory
         run: |
