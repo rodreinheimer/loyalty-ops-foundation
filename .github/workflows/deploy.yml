@@ -34,6 +34,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
+              color: "f29513",
               labels: ['${{ vars.APP_DEPLOYING_LABEL }}']
             });
 
@@ -77,6 +78,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
+              color: "12802b",
               labels: ['${{ vars.APP_DEPLOYED_LABEL }}']
             });
 
@@ -104,5 +106,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
+              color: "e32a27",
               labels: ['${{ vars.APP_FAILURE_LABEL }}']
             });
