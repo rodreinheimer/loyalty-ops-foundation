@@ -54,7 +54,7 @@ jobs:
       - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides EnvType=${{ vars.ENV_NAME }} --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_NAMED_IAM
 
       - name: Add label to PR
-        if: always() && env.PR_NUMBER
+        if: success() && env.PR_NUMBER
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -78,4 +78,29 @@ jobs:
               repo: context.repo.repo,
               issue_number: issue_number,
               labels: ['${{ vars.APP_DEPLOYED_LABEL }}']
+            });
+        if: failure() && env.PR_NUMBER
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            let fs = require('fs');
+            let issue_number = ${{ env.PR_NUMBER }};
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: `App build failed`
+            });
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              name: '${{ vars.APP_DEPLOYING_LABEL }}'
+            });
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              labels: ['${{ vars.APP_FAILURE_LABEL }}']
             });
