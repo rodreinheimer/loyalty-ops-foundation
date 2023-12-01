@@ -1,6 +1,8 @@
 name: Full Deploy
 on:
-  push:
+  pull_request:
+    types: 
+      - opened
     branches:
       - main
 jobs:
