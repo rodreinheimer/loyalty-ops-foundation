@@ -3,6 +3,7 @@ on:
   pull_request:
     types: 
       - opened
+
     branches:
       - main
 jobs:
@@ -16,15 +17,9 @@ jobs:
 
     steps: 
       - name: Get Fundation Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v 4
         with:
           path: build/loyalty-ops-layer-foundation
-
-#      - name: Checkout Utilities Repo
-#        uses: actions/checkout@v4
-#        with:
-#          repository: rodreinheimer/loyalty-ops-layer-utilities
-#          path: build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-utilities
 
       - name: Checkout Configuration Repo
         uses: actions/checkout@v4
@@ -45,12 +40,6 @@ jobs:
           echo 'SOURCE_CODE_3: ${{ vars.SOURCE_CODE_3 }}'
           echo 'SOURCE_CODE_4: ${{ vars.SOURCE_CODE_4 }}'
           echo '------------------------------------------------'
-
-#      - name: Checkout Modules Repo
-#        uses: actions/checkout@v4
-#        with:
-#          repository: rodreinheimer/loyalty-ops-layer-modules
-#          path: build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules
 
       # Deploy to AWS CloudFormation
       - name: Deploy to AWS Sam Build
