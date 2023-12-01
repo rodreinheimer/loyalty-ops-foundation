@@ -67,12 +67,14 @@ jobs:
       #  uses: aws-actions/setup-sam@v2
       #- run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides EnvType=${{ vars.ENV_NAME }} --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_NAMED_IAM
 
-      - name: 'Comment on PR 2'
+      - name: Add label to PR - ${{ env.PR_NUMBER }} - ${{ vars.APP_DEPLOYED_LABEL }}
+        if: env.PR_NUMBER
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             let fs = require('fs');
+            let issue_number = ${{ env.PR_NUMBER }};
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
