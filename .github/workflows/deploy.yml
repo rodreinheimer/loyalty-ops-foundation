@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: List Root Directory
-        run: echo "Add label to PR - ${{ vars.APP_DEPLOYING_LABEL }}"
+        run: echo "Add label to PR2 - ${{ vars.APP_DEPLOYING_LABEL }}"
 
       - name: Add label to PR - ${{ vars.APP_DEPLOYING_LABEL }}
         if: inputs.pr_number
