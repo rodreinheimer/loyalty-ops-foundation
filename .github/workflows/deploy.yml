@@ -66,3 +66,31 @@ jobs:
       - name: Deploy to AWS Sam Deploy
         uses: aws-actions/setup-sam@v2
       - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides EnvType=${{ vars.ENV_NAME }} --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_IAM 
+
+      - name: 'Comment on PR'
+        if: inputs.pr_number
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            let fs = require('fs');
+            let issue_number = ${{ inputs.pr_number }};
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: `App has been deployed for testing 
+                This is an example`
+            });
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              name: '${{ vars.APP_DEPLOYING_LABEL }}'
+            });
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              labels: ['${{ vars.APP_DEPLOYED_LABEL }}']
+            });
