@@ -63,7 +63,7 @@ jobs:
           echo '------------------------------------------------'
 
       # Deploy to AWS CloudFormation - CAPABILITY_NAMED_IAM
-      - name: Deploy to AWS Sam Deploy
+      - name: Deploy to AWS Sam Deploy 2
         uses: aws-actions/setup-sam@v2
       - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides EnvType=${{ vars.ENV_NAME }} --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_IAM
 
