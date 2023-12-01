@@ -41,35 +41,9 @@ jobs:
         with:
           node-version: 16
 
-      - name: List Root Directory
-        run: |
-          pwd
-          ls -R
-          echo '------------------------------------------------'
-          echo 'ENV_NAME: ${{ vars.ENV_NAME }}'
-          echo 'DEPLOYMENT_BUCKET: ${{ vars.DEPLOYMENT_BUCKET }}'
-          echo 'ENV_NAME: ${{ vars.STACK_NAME }}'
-          echo 'SOURCE_CODE_1: ${{ vars.SOURCE_CODE_1 }}'
-          echo 'SOURCE_CODE_2: ${{ vars.SOURCE_CODE_2 }}'
-          echo 'SOURCE_CODE_3: ${{ vars.SOURCE_CODE_3 }}'
-          echo 'SOURCE_CODE_4: ${{ vars.SOURCE_CODE_4 }}'
-          echo '------------------------------------------------'
-
-      - name: Build Modules
-        run: |
-          cd build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules/nodejs
-          npm install --production
-          
-      - name: Package Modules Layer
-        run: |
-          cd build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules
-          zip -vr layer_delta.zip nodejs/ -x "*.DS_Store"
-
       # Deploy to AWS CloudFormation
-      - name: Deploy to AWS Sam Build 2
+      - name: Deploy to AWS Sam Build
         uses: aws-actions/setup-sam@v2
-      #- run: sam package --debug --template build/loyalty-ops-layer-foundation/template.yml --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }}
-      # Prevent prompts and failure when the stack is unchanged
       - run: sam deploy --debug --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides EnvType=${{ vars.ENV_NAME }} --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_NAMED_IAM 
 
 

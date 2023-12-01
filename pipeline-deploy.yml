@@ -1,42 +1,78 @@
-name: Deploy the Pipeline Cloudformation
+name: Full Deploy
 on:
   push:
     branches:
       - main
-    paths:
-      - '.github/workflows/pipeline-deploy.yml'
-      - 'pipeline.yml'
-
 jobs:
   pre_build:
-  pipeline_cloudformation:
-    name: Pipeline Cloudformation
     runs-on: ubuntu-latest
     environment: develop
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
-      AWS_ENV: ${{ secrets.AWS_ENV }}
-    steps:
-      - name: Get Code
-        uses: actions/checkout@v3
 
-      - name: List root directory
-        run: ls
-
-      # Configure AWS Credential
-      - name: Configure AWS credentials
-        id: creds
-        uses: aws-actions/configure-aws-credentials@v1
+    steps: 
+      - name: Get Fundation Repo
+        uses: actions/checkout@v4
         with:
-          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          path: build/loyalty-ops-layer-foundation
+
+      - name: Checkout Utilities Repo
+        uses: actions/checkout@v4
+        with:
+          repository: rodreinheimer/loyalty-ops-layer-utilities
+          path: build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-utilities
+
+      - name: Checkout Configuration Repo
+        uses: actions/checkout@v4
+        with:
+          repository: rodreinheimer/loyalty-ops-layer-config
+          path: build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-config
+
+      - name: Checkout Modules Repo
+        uses: actions/checkout@v4
+        with:
+          repository: rodreinheimer/loyalty-ops-layer-modules
+          path: build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: List Root Directory
+        run: |
+          pwd
+          ls -R
+          echo '------------------------------------------------'
+          echo 'ENV_NAME: ${{ vars.ENV_NAME }}'
+          echo 'DEPLOYMENT_BUCKET: ${{ vars.DEPLOYMENT_BUCKET }}'
+          echo 'ENV_NAME: ${{ vars.STACK_NAME }}'
+          echo 'SOURCE_CODE_1: ${{ vars.SOURCE_CODE_1 }}'
+          echo 'SOURCE_CODE_2: ${{ vars.SOURCE_CODE_2 }}'
+          echo 'SOURCE_CODE_3: ${{ vars.SOURCE_CODE_3 }}'
+          echo 'SOURCE_CODE_4: ${{ vars.SOURCE_CODE_4 }}'
+          echo '------------------------------------------------'
+
+      - name: Build Modules
+        run: |
+          cd build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules/nodejs
+          npm install --production
+          
+      - name: Package Modules Layer
+        run: |
+          cd build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-modules
+          zip -vr layer_delta.zip nodejs/ -x "*.DS_Store"
 
       # Deploy to AWS CloudFormation
-      - name: Deploy to AWS CloudFormation
-        uses: aws-actions/aws-cloudformation-github-deploy@v1
-        with:
-          name: loyalty-ops-config-layer-pipeline
-          template: ./pipeline.yml
+      - name: Deploy to AWS Sam Build 2
+        uses: aws-actions/setup-sam@v2
+      #- run: sam package --debug --template build/loyalty-ops-layer-foundation/template.yml --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }}
+      # Prevent prompts and failure when the stack is unchanged
+      - run: sam deploy --debug --no-confirm-changeset --no-fail-on-empty-changeset --parameter-overrides EnvType=${{ vars.ENV_NAME }} --template build/loyalty-ops-layer-foundation/template.yml --stack-name ${{ vars.STACK_NAME }} --s3-bucket ${{ vars.DEPLOYMENT_BUCKET }} --region ${{ env.AWS_REGION }} --capabilities CAPABILITY_NAMED_IAM 
+
+
+
+
+
