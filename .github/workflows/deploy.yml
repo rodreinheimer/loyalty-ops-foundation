@@ -18,7 +18,7 @@ jobs:
       PR_NUMBER: ${{ github.event.number }}
 
     steps:
-      - name: List Root Directory 2
+      - name: List Root Directory
         run: echo "Add label to PR - ${{ vars.APP_DEPLOYING_LABEL }}"
 
       - name: Review github ref
