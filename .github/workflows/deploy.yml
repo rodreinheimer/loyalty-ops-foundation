@@ -2,7 +2,7 @@ name: Full Deploy
 on:
   pull_request:
     types: 
-      - opened
+      - merged
     branches:
       - main
       - develop
