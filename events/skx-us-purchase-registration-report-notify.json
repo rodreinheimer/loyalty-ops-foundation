@@ -20,14 +20,14 @@
                 "s3SchemaVersion": "1.0",
                 "configurationId": "f12c1549-f62c-4487-809f-2649f016c88b",
                 "bucket": {
-                    "name": "loyalty-ops-foundation-report-prd",
+                    "name": "loyalty-ops-foundation-report-dev",
                     "ownerIdentity": {
                         "principalId": "A16LVHEUMKMM9I"
                     },
-                    "arn": "arn:aws:s3:::loyalty-ops-foundation-report-prd"
+                    "arn": "arn:aws:s3:::loyalty-ops-foundation-report-dev"
                 },
                 "object": {
-                    "key": "PURCHASE_REGISTRATION_REPORT_2023-11-07_195420.json",
+                    "key": "PURCHASE_REGISTRATION_REPORT_2023-12-04_231842.json",
                     "size": 327,
                     "eTag": "2733db18d0f5c205f1d5e67e88e20c91",
                     "sequencer": "0060470AE10C89B4AA"

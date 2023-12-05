@@ -22,7 +22,6 @@ Globals:
         SKX_CONFIG_LAYER_ROOT: "/opt/nodejs"
         SKX_ENV: !Ref EnvType
     Layers:
-      - !Ref ModulesLayer
       - !Ref ConfigLayer
       - !Ref UtilLayer
 
@@ -71,15 +70,6 @@ Resources:
                 Rules:
                   - Name: suffix
                     Value: 'json'
-
-  ModulesLayer:
-    Type: AWS::Serverless::LayerVersion
-    Properties:
-      LayerName: !Join [ '', [ 'loyalty-ops-modules-', !Ref EnvType ] ]
-      Description: Loyalty report and monitors modules.
-      ContentUri: layers/loyalty-ops-layer-modules/.
-      CompatibleRuntimes:
-        - nodejs16.x
 
   ConfigLayer:
     Type: AWS::Serverless::LayerVersion
