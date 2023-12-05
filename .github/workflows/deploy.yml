@@ -18,19 +18,10 @@ jobs:
       PR_NUMBER: ${{ github.event.number }}
 
     steps:
-      - name: List Root Directory
-        run: echo "Add label to PR - ${{ vars.APP_DEPLOYING_LABEL }}"
-
-      - name: Review github ref
-        run:  echo "${{ github.ref == 'refs/heads/main' && 'production' || 'develop' }}"
-
       - name: GitHub environment
         run: echo "${{ env.ENV_NAME }}"
 
-      - name: Output GitHub context
-        run: echo "${{ toJSON(github) }}"
-
-      - name: Add label to PR
+      - name: Add Label to PR
         if: env.PR_NUMBER
         uses: actions/github-script@v6
         with:
@@ -44,21 +35,26 @@ jobs:
               labels: ['${{ vars.APP_DEPLOYING_LABEL }}']
             });
 
-      - name: Get Fundation Repo
+      - name: Checkout Fundation Repo
         uses: actions/checkout@v4
         with:
           path: build/loyalty-ops-layer-foundation
-
-      - name: Install notification dependencies 
-        run: |
-          cd build/loyalty-ops-layer-foundation/functions/notifications
-          npm install
 
       - name: Checkout Configuration Repo
         uses: actions/checkout@v4
         with:
           repository: rodreinheimer/loyalty-ops-layer-config
           path: build/loyalty-ops-layer-foundation/layers/loyalty-ops-layer-config
+
+      - name: Install Notification Dependencies 
+        run: |
+          cd build/loyalty-ops-layer-foundation/functions/reports
+          npm install
+      
+      - name: Install Report Dependencies 
+        run: |
+          cd build/loyalty-ops-layer-foundation/functions/notifications
+          npm install
 
       # Deploy to AWS CloudFormation 
       - name: Deploy to AWS Sam Deploy
