@@ -49,6 +49,11 @@ jobs:
         with:
           path: build/loyalty-ops-layer-foundation
 
+      - name: Install notification dependencies 
+        run: |
+          cd build/loyalty-ops-layer-foundation/functions/notifications
+          npm install
+
       - name: Checkout Configuration Repo
         uses: actions/checkout@v4
         with:
