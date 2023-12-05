@@ -18,9 +18,6 @@ jobs:
       PR_NUMBER: ${{ github.event.number }}
 
     steps:
-      - name: GitHub environment
-        run: echo "${{ env.ENV_NAME }}"
-
       - name: Add Label to PR
         if: env.PR_NUMBER
         uses: actions/github-script@v6
